@@ -270,6 +270,7 @@ if(!isset($_SESSION["loggedin"])) header("Location: login.php");
                   <th scope="col">Duration</th>
                   <th scope="col">As-Is</th>
                   <th scope="col">Tube</th>
+                  <th scope="col" colspan="2">Action</th>
                   </tr>
               </thead>
               <tbody>
@@ -280,7 +281,8 @@ if(!isset($_SESSION["loggedin"])) header("Location: login.php");
                 if ($query->num_rows > 0) {
                 $no =1;
                 while($data = mysqli_fetch_array($query)) { ?>
-                <tr class="cursor"  data-toggle="modal" data-target="#editModal<?= $no;?>">
+                <tr class="cursor">
+                <!-- data-toggle="modal" data-target="#editModal<?= $no;?>" -->
                   <td><?= $no;?></td>
                   <td><?= $data['end_result'];?></td>
                   <td>
@@ -298,6 +300,16 @@ if(!isset($_SESSION["loggedin"])) header("Location: login.php");
                   <td><?= $data['duration'];?></td>
                   <td><?= $data['asis'];?></td>
                   <td><?= $data['tube'];?></td>
+                  <td>
+                    <a data-toggle="modal" data-target="#editModal<?= $no;?>">
+                      <span class="fa fa-edit text-primary"></span>
+                    </a>
+                  </td>
+                  <td>
+                    <a href="delete_end_result.php?kode_endresult=<?= $data['kode_endresult'];?>" onclick="return confirm('Anda yakin ingin hapus data?')">
+                      <span class="fa fa-trash text-danger"></span>
+                    </a>
+                  </td>
                   <!-- Modal edit end result -->
                   <div class="modal" id="editModal<?= $no;?>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg">
@@ -532,6 +544,7 @@ if(!isset($_SESSION["loggedin"])) header("Location: login.php");
                   <th scope="col">Duration</th>
                   <th scope="col">As-Is</th>
                   <th scope="col">Tube</th>
+                  <th scope="col" colspan="2">Action</th>
                   </tr>
               </thead>
               <tbody>
@@ -542,7 +555,8 @@ if(!isset($_SESSION["loggedin"])) header("Location: login.php");
                 if ($query->num_rows > 0) {
                 $no =1;
                 while($data = mysqli_fetch_array($query)) { ?>
-                <tr class="cursor"  data-toggle="modal" data-target="#editModal1<?= $no;?>">
+                <tr class="cursor">
+                <!-- data-toggle="modal" data-target="#editModal1<?= $no;?>" -->
                   <td><?= $no;?></td>
                   <td><?= $data['intermediate'];?></td>
                   <td>
@@ -560,6 +574,16 @@ if(!isset($_SESSION["loggedin"])) header("Location: login.php");
                   <td><?= $data['duration'];?></td>
                   <td><?= $data['asis'];?></td>
                   <td><?= $data['tube'];?></td>
+                  <td>
+                    <a data-toggle="modal" data-target="#editModal1<?= $no;?>">
+                      <span class="fa fa-edit text-primary"></span>
+                    </a>
+                  </td>
+                  <td>
+                    <a href="delete_intermediate.php?kode_intermediate=<?= $data['kode_intermediate'];?>" onclick="return confirm('Anda yakin ingin hapus data?')">
+                      <span class="fa fa-trash text-danger"></span>
+                    </a>
+                  </td>
                   <!-- Modal edit Intermediate -->
                   <div class="modal fade" id="editModal1<?= $no;?>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg">
@@ -816,6 +840,7 @@ if(!isset($_SESSION["loggedin"])) header("Location: login.php");
                   <th scope="col">Start</th>
                   <th scope="col">End</th>
                   <th scope="col">Duration</th>
+                  <th scope="col" colspan="2">Action</th>
                   </tr>
               </thead>
               <tbody>
@@ -826,7 +851,8 @@ if(!isset($_SESSION["loggedin"])) header("Location: login.php");
                 if ($query->num_rows > 0) {
                 $no =1;
                 while($data = mysqli_fetch_array($query)) { ?>
-                <tr class="cursor"  data-toggle="modal" data-target="#editModal2<?= $no;?>">
+                <tr class="cursor">
+                <!-- data-toggle="modal" data-target="#editModal2<?= $no;?>" -->
                   <td><?= $no;?></td>
                   <td><?= $data['activity'];?></td>
                   <?php
@@ -873,6 +899,16 @@ if(!isset($_SESSION["loggedin"])) header("Location: login.php");
                   <td><?= date('d-m-Y', strtotime($data['start']));?></td>
                   <td><?= date('d-m-Y', strtotime($data['end']));?></td>
                   <td><?= $data['duration'];?></td>
+                  <td>
+                    <a data-toggle="modal" data-target="#editModal2<?= $no;?>">
+                      <span class="fa fa-edit text-primary"></span>
+                    </a>
+                  </td>
+                  <td>
+                    <a href="delete_activity.php?kode_activity=<?= $data['kode_activity'];?>" onclick="return confirm('Anda yakin ingin hapus data?')">
+                      <span class="fa fa-trash text-danger"></span>
+                    </a>
+                  </td>
                   <!-- Modal Edit Activity -->
                   <div class="modal fade" id="editModal2<?= $no;?>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg">
@@ -2500,7 +2536,6 @@ $(document).ready(function() {
         // alert(" Can't do because: " + error);
     },
     });
-    // $('#fgdact').text(selectedValue);
   });
 });
 </script>
@@ -2516,7 +2551,7 @@ function aksi() {
   // Hitung selisih tanggal dalam milidetik
   var selisih = endDate.getTime() - startDate.getTime();
 
-  // Konversi selisih tanggal dari milidetik menjadi hari
+  // Konversi selisih durasi
   var durasi = Math.ceil(selisih / (1000 * 60 * 60 * 24));
   if (durasi < 0) {
     document.getElementById("duration-endresult").value = 0;
@@ -2751,10 +2786,6 @@ $(document).ready(function() {
 
     xmlhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
-        // Response dari server berhasil diterima
-        // console.log(this.responseText);
-        // alert(this.responseText);
-        // window.open("addProject.php");
         $('body').append(this.responseText);
       }
     };
@@ -2800,10 +2831,6 @@ $(document).ready(function() {
               //  "&option_supported_edit=" + option_supported_edit +
     xmlhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
-        // Response dari server berhasil diterima
-        // console.log(this.responseText);
-        // alert(this.responseText);
-        // window.open("addProject.php");
         $('body').append(this.responseText);
       }
     };
