@@ -8,8 +8,9 @@ $kode_intermediate = $_POST['kode_intermediate'];
 $kode_activity = $_POST['kode_activity'];
 $activity = $_POST['activity'];
 $pic = $_POST['pic'];
-// $support = implode(",", $_POST['option_supported_edit']);
-// echo $support = $_POST['support'];
+$support = $_POST['support'];
+// $support = implode(",", $_POST['support']);
+// print_r ($support);
 $lokasi = $_POST['lokasi'];
 $uom = $_POST['uom'];
 $target = $_POST['target'];
@@ -30,10 +31,9 @@ $sep = $_POST['sep'];
 $okt = $_POST['okt'];
 $nov = $_POST['nov'];
 $des = $_POST['des'];
-
 $sql = "UPDATE db_target_activity SET tanggal_modified=NOW(), user_modified='$username', 
         kode_intermediate='$kode_intermediate', kode_activity='$kode_activity', activity='$activity',
-        pic='$pic', lokasi='$lokasi', uom='$uom', target='$target', 
+        pic='$pic',supported_by='$support', lokasi='$lokasi', uom='$uom', target='$target', 
         kode_fgd='$kode_fgd', estimasi_cost='$estimasi_cost', start='$start', end='$end', 
         duration='$duration', target_jan='$jan', target_feb='$feb', target_mar='$mar', 
         target_apr='$apr', target_mei='$mei', target_jun='$jun', target_jul='$jul', target_aug='$aug', 
@@ -45,5 +45,6 @@ if (mysqli_query($db, $sql)) {
 } else {
     echo "Error: " . $sql . "<br>" . mysqli_error($conn);
 }
+
 
 ?>

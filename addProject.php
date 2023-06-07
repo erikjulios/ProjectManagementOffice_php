@@ -28,6 +28,10 @@ if(!isset($_SESSION["loggedin"])) header("Location: login.php");
     .cursor:hover{
       cursor: pointer;
     }
+    .border-tebal{
+    border-top : 3px solid blue ;
+
+  }
   </style>
   
 </head>
@@ -230,7 +234,7 @@ if(!isset($_SESSION["loggedin"])) header("Location: login.php");
           <!-- button -->
           <div class="col-lg-3 col-4">
           <!-- onclick="location.href='#';" -->
-            <button type="button" id="btn-end" class="btn btn-block btn-secondary">
+            <button type="button" id="btn-end" class="btn btn-block btn-secondary border border-dark">
               End Result
             </button>
           </div>
@@ -248,9 +252,12 @@ if(!isset($_SESSION["loggedin"])) header("Location: login.php");
           </div>
         </div>
         <!-- tabel end result -->
-        <div id="endresult">
-          <div class="row justify-content-end mt-4 mb-4">
-            <div class="col-2">
+        <div id="endresult" class=" border border-top-0 border-primary px-5 pb-5 pt-2 mt-2">
+          <div class="row justify-content-between mt-4 mb-4">
+            <div class="col-3">
+              <input type="text" class="form-control" id="searchInput_end" placeholder="Search ..." name="search">
+            </div>
+            <div class="col-2 ml-auto">
               <button id="endBtnModal" type="button" class="btn btn-block btn-secondary">
                 + Add Project
               </button>
@@ -273,7 +280,7 @@ if(!isset($_SESSION["loggedin"])) header("Location: login.php");
                   <th scope="col" colspan="2">Action</th>
                   </tr>
               </thead>
-              <tbody>
+              <tbody id="data-body-end">
                 <?php 
                 include('proses/koneksi.php');
                 $sql = "SELECT * FROM db_target_end_result";
@@ -396,7 +403,7 @@ if(!isset($_SESSION["loggedin"])) header("Location: login.php");
                                 <div class="col-md-1">
                                     <div class="form-group">
                                         <label>Duration:</label>
-                                        <input type="text" class="form-control pull-right" id="duration-endresult" value="<?= $data['duration'];?>" name="duration" required>
+                                        <input type="text" class="form-control pull-right" id="duration-endresult" value="<?= $data['duration'];?>" name="duration" readonly required>
                                     </div>
                                 </div>
                                 <div class="col-md-1">
@@ -490,14 +497,6 @@ if(!isset($_SESSION["loggedin"])) header("Location: login.php");
                                   </div>
                                 </div>
                             </div>
-                              <!-- multi input -->
-                              <!-- <div class="col-md-1 float-right">
-                                  <div class="form-group">
-                                      <label></label>
-                                      <button type="button" class="mt-4 btn btn-primary" onclick="addEndresult()">+</button>
-                                  </div>
-                              </div>
-                              <div id="form_endresult"></div> -->
                         </div>
                         <div class="modal-footer">
                           <button type="submit" class="btn btn-primary float-right">Update</button>
@@ -521,9 +520,12 @@ if(!isset($_SESSION["loggedin"])) header("Location: login.php");
         </div>
 
         <!-- tabel intermediate -->
-        <div id="inter" style="display: none;" >
-          <div class="row justify-content-end">
-            <div class="col-2">
+        <div id="inter" style="display: none;" class="border border-top-0 border-primary border-5 px-5 pb-5 pt-2 mt-2">
+          <div class="row justify-content-between mt-4 mb-4">
+            <div class="col-3">
+              <input type="text" class="form-control" id="searchInput_inter" placeholder="Search ..." name="search">
+            </div>
+            <div class="col-2 ml-auto">
               <button id="interBtnModal" type="button" class="btn btn-block btn-secondary">
                 + Add Project
               </button>
@@ -547,7 +549,7 @@ if(!isset($_SESSION["loggedin"])) header("Location: login.php");
                   <th scope="col" colspan="2">Action</th>
                   </tr>
               </thead>
-              <tbody>
+              <tbody id="data-body-inter">
                 <?php 
                 include('proses/koneksi.php');
                 $sql = "SELECT * FROM db_target_intermediate";
@@ -690,7 +692,7 @@ if(!isset($_SESSION["loggedin"])) header("Location: login.php");
                                 <div class="col-md-1">
                                     <div class="form-group">
                                         <label>Duration:</label>
-                                        <input type="text" id="duration-inter" class="form-control pull-right" name="duration" value="<?= $data['duration'];?>" >
+                                        <input type="text" id="duration-inter" class="form-control pull-right" name="duration" value="<?= $data['duration'];?>" readonly >
                                     </div>
                                 </div>
                                 <div class="col-md-1">
@@ -815,9 +817,12 @@ if(!isset($_SESSION["loggedin"])) header("Location: login.php");
         </div>
 
         <!-- tabel activity -->
-        <div id="act" style="display: none;" >
-          <div class="row justify-content-end">
-            <div class="col-2">
+        <div id="act" style="display: none;" class="border border-top-0 border-primary px-5 pb-5 pt-2 mt-2" >
+          <div class="row justify-content-between mt-4 mb-4">
+            <div class="col-3">
+              <input type="text" class="form-control" id="searchInput_act" placeholder="Search ..." name="search">
+            </div>
+            <div class="col-2 ml-auto">
               <button id="actBtnModal" type="button" class="btn btn-block btn-secondary">
                 + Add Project
               </button>
@@ -843,7 +848,7 @@ if(!isset($_SESSION["loggedin"])) header("Location: login.php");
                   <th scope="col" colspan="2">Action</th>
                   </tr>
               </thead>
-              <tbody>
+              <tbody id="data-body-act">
                 <?php 
                 include('proses/koneksi.php');
                 $sql = "SELECT * FROM db_target_activity";
@@ -1001,14 +1006,17 @@ if(!isset($_SESSION["loggedin"])) header("Location: login.php");
                                         <!-- select2 -->
                                         <script src="dist/js/selectt2.js"></script>
                                         <script>
-                                          $("#option_supported_edit<?= $no?>").select2({
-                                              placeholder: "Supported by",
-                                              templateSelection: function (data, container) {
-                                                if (data.selected) {
-                                                    $(container).css("color", "black");
-                                                }
-                                                return data.text;
-                                            }
+                                          $(document).on('shown.bs.modal', function () {
+                                              // Inisialisasi Select2 di dalam modal
+                                              $("#option_supported_edit<?= $no?>").select2({
+                                                  placeholder: "Supported by",
+                                                  templateSelection: function (data, container) {
+                                                      if (data.selected) {
+                                                          $(container).css("color", "black");
+                                                      }
+                                                      return data.text;
+                                                  }
+                                              });
                                           });
                                         </script>
                                         <!-- <input type="text" class="form-control pull-right" id="nama" name="support" value="<?= $data[''];?>" required> -->
@@ -1091,7 +1099,7 @@ if(!isset($_SESSION["loggedin"])) header("Location: login.php");
                                 <div class="col-md-1">
                                     <div class="form-group">
                                         <label for="nama">Duration:</label>
-                                        <input type="text" class="form-control pull-right" id="duration-act" name="duration" value="<?= $data['duration'];?>" >
+                                        <input type="text" class="form-control pull-right" id="duration-act" name="duration" value="<?= $data['duration'];?>" readonly>
                                     </div>
                                 </div>
                               </div>
@@ -1183,7 +1191,7 @@ if(!isset($_SESSION["loggedin"])) header("Location: login.php");
                               <div id="form_activity"></div> -->
                         </div>
                         <div class="modal-footer">
-                          <button type="submit" class="btn btn-primary float-right">Tambah</button>
+                          <button type="submit" class="btn btn-primary float-right">Update</button>
                           <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
                         </div>
                         </form>
@@ -2614,6 +2622,53 @@ function aksi_act() {
   }
 }
 
+function aksi_act2(no) {
+  // Ambil nilai tanggal dari input
+  var startDate = new Date(document.getElementById("start"+no).value);
+  var endDate = new Date(document.getElementById("end"+no).value);
+
+  // Hitung selisih tanggal dalam milidetik
+  var selisih = endDate.getTime() - startDate.getTime();
+
+  // Konversi selisih tanggal dari milidetik menjadi hari
+  var durasi = Math.ceil(selisih / (1000 * 60 * 60 * 24));
+  if (durasi < 0) {
+    document.getElementById("duration"+no).value = 0;
+    alert('Masukan tanggal yang sesuai');
+    document.getElementById("end"+no).value = "";
+  }
+  else if(isNaN(durasi)) {
+    document.getElementById("duration"+no).value = 0;
+  }
+  else {
+    document.getElementById("duration"+no).value = durasi;
+  }
+}
+  
+//   $(document).on("shown.bs.modal", function () {
+//   // Ambil nilai tanggal dari input
+//   var startDate = new Date(document.getElementsByName("start")[0].value);
+//   var endDate = new Date(document.getElementsByName("end")[0].value);
+
+//   // Hitung selisih tanggal dalam milidetik
+//   var selisih = endDate.getTime() - startDate.getTime();
+
+//   // Konversi selisih tanggal dari milidetik menjadi hari
+//   var durasi = Math.ceil(selisih / (1000 * 60 * 60 * 24));
+//   if (durasi < 0) {
+//     document.getElementsByName("duration")[0].value = 0;
+//     alert('Masukkan tanggal yang sesuai');
+//     document.getElementsByName("end")[0].value = "";
+//   }
+//   else if (isNaN(durasi)) {
+//     document.getElementsByName("duration")[0].value = 0;
+//   }
+//   else {
+//     document.getElementsByName("duration")[0].value = durasi;
+//   }
+// });
+
+
 // function aksi_edit_endresult() {
 //   // Ambil nilai tanggal dari input
 //   var startDate= new Date(document.getElementById("start-endresult2").value);
@@ -2794,52 +2849,349 @@ $(document).ready(function() {
     xmlhttp.send(data);
 
   }
-  function myFunction3(no) {
-    var xmlhttp = new XMLHttpRequest();
-    var url = "proses_edit_activity.php";
-    var kode_activity = document.getElementById("kode_activity"+no).value;
-    var kode_intermediate = document.getElementById("kode_intermediate"+no).value;
-    var activity = document.getElementById("activity"+no).value;
-    var pic = document.getElementById("pic"+no).value;
-    // var option_supported_edit = document.getElementById("option_supported_edit"+no).value;
-    var lokasi = document.getElementById("lokasi"+no).value;
-    var uom = document.getElementById("uom"+no).value;
-    var target = document.getElementById("target"+no).value;
-    var kode_fgd = document.getElementById("kode_fgd"+no).value;
-    var estimate_cost = document.getElementById("estimate_cost"+no).value;
-    var start = document.getElementById("start"+no).value;
-    var end = document.getElementById("end"+no).value;
-    var duration = document.getElementById("duration"+no).value;
-    var jan = document.getElementById("jan"+no).value;
-    var feb = document.getElementById("feb"+no).value;
-    var mar = document.getElementById("mar"+no).value;
-    var apr = document.getElementById("apr"+no).value;
-    var mei = document.getElementById("mei"+no).value;
-    var jun = document.getElementById("jun"+no).value;
-    var jul = document.getElementById("jul"+no).value;
-    var aug = document.getElementById("aug"+no).value;
-    var sep = document.getElementById("sep"+no).value;
-    var okt = document.getElementById("okt"+no).value;
-    var nov = document.getElementById("nov"+no).value;
-    var des = document.getElementById("des"+no).value;
-    var data = "kode_activity=" + kode_activity+ "&kode_intermediate=" + kode_intermediate + "&kode_fgd=" + kode_fgd + "&activity=" + activity + "&uom=" + uom +
-               "&pic=" + pic + "&lokasi=" + lokasi + "&target=" + target +
-               "&estimate_cost=" + estimate_cost + "&start=" + start + "&end=" + end + 
-               "&duration=" + duration + "&jan=" + jan + 
-               "&feb=" + feb + "&mar=" + mar + "&apr=" + apr + "&mei=" + mei + "&jun=" + jun + 
-               "&jul=" + jul + "&aug=" + aug + "&sep=" + sep + "&okt=" + okt + "&nov=" + nov + "&des=" + des;
-              //  "&option_supported_edit=" + option_supported_edit +
-    xmlhttp.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-        $('body').append(this.responseText);
-      }
-    };
-    xmlhttp.open("POST", url, true);
-    xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    xmlhttp.send(data);
-  }
-</script>                                        
+    function myFunction3(no) {
+      var xmlhttp = new XMLHttpRequest();
+      var url = "proses_edit_activity.php";
+      var kode_activity = document.getElementById("kode_activity"+no).value;
+      var kode_intermediate = document.getElementById("kode_intermediate"+no).value;
+      var activity = document.getElementById("activity"+no).value;
+      var pic = document.getElementById("pic"+no).value;
+      var support = $("#option_supported_edit"+no).val();
+      var lokasi = document.getElementById("lokasi"+no).value;
+      var uom = document.getElementById("uom"+no).value;
+      var target = document.getElementById("target"+no).value;
+      var kode_fgd = document.getElementById("kode_fgd"+no).value;
+      var estimate_cost = document.getElementById("estimate_cost"+no).value;
+      var start = document.getElementById("start"+no).value;
+      var end = document.getElementById("end"+no).value;
+      var duration = document.getElementById("duration"+no).value;
+      var jan = document.getElementById("jan"+no).value;
+      var feb = document.getElementById("feb"+no).value;
+      var mar = document.getElementById("mar"+no).value;
+      var apr = document.getElementById("apr"+no).value;
+      var mei = document.getElementById("mei"+no).value;
+      var jun = document.getElementById("jun"+no).value;
+      var jul = document.getElementById("jul"+no).value;
+      var aug = document.getElementById("aug"+no).value;
+      var sep = document.getElementById("sep"+no).value;
+      var okt = document.getElementById("okt"+no).value;
+      var nov = document.getElementById("nov"+no).value;
+      var des = document.getElementById("des"+no).value;
+      var data = "kode_activity=" + kode_activity+ "&kode_intermediate=" + kode_intermediate + "&kode_fgd=" + kode_fgd + "&activity=" + activity + "&uom=" + uom +
+                "&pic=" + pic +  "&support=" + support + "&lokasi=" + lokasi + "&target=" + target +
+                "&estimate_cost=" + estimate_cost + "&start=" + start + "&end=" + end + 
+                "&duration=" + duration + "&jan=" + jan + 
+                "&feb=" + feb + "&mar=" + mar + "&apr=" + apr + "&mei=" + mei + "&jun=" + jun + 
+                "&jul=" + jul + "&aug=" + aug + "&sep=" + sep + "&okt=" + okt + "&nov=" + nov + "&des=" + des;
+      xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          $('body').append(this.responseText);
+        }
+      };
+      xmlhttp.open("POST", url, true);
+      xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      xmlhttp.send(data);
+
+    }
+</script> 
+
+<!-- search data end result-->
+<script>
+    $(document).ready(function() {
+      $('#searchInput_end').on('input', function() {
+        search();
+      });
+    });
+
+  // <!-- Fungsi untuk melakukan pencarian dan mengganti isi data-body dengan hasil pencarian -->
+    
+    function search() {
+        var xmlhttp;
+        if (window.XMLHttpRequest) {
+            // Untuk browser modern
+            xmlhttp = new XMLHttpRequest();
+        } else {
+            // Untuk browser lama
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var dataBody = document.getElementById("data-body-end");
+                // Menghapus semua baris data sebelumnya
+                while (dataBody.firstChild) {
+                    dataBody.removeChild(dataBody.firstChild);
+                }
+                // Mendapatkan hasil pencarian dari responseText
+                var result = JSON.parse(this.responseText);
+                if (result.length > 0) {
+                    var no = 1;
+                    // Menambahkan baris data hasil pencarian ke data-body
+                    result.forEach(function(data) {
+                        var row = document.createElement("tr");
+                        var noCell = document.createElement("td");
+                        noCell.textContent = no;
+                        var endResultCell = document.createElement("td");
+                        endResultCell.textContent = data.end_result;
+                        var uomCell = document.createElement("td");
+                        uomCell.textContent = data.uom;
+                        var estimateCostCell = document.createElement("td");
+                        estimateCostCell.textContent = data.estimate_cost;
+                        var startCell = document.createElement("td");
+                        startCell.textContent = data.start;
+                        var endCell = document.createElement("td");
+                        endCell.textContent = data.end;
+                        var durationCell = document.createElement("td");
+                        durationCell.textContent = data.duration;
+                        var asIsCell = document.createElement("td");
+                        asIsCell.textContent = data.asis;
+                        var tubeCell = document.createElement("td");
+                        tubeCell.textContent = data.tube;
+                        var hapusCell = document.createElement("td");
+                        var hapusLink = document.createElement("a");
+                        hapusLink.href = 'delete_end_result.php?kode_endresult='+data.kode_endresult;
+                        hapusLink.onclick = function() {
+                          return confirm('Anda yakin ingin hapus data?');
+                        };
+
+                        var trashIcon = document.createElement("span");
+                        trashIcon.className = "fa fa-trash text-danger";
+
+                        hapusLink.appendChild(trashIcon);
+                        hapusCell.appendChild(hapusLink);
+
+                        row.appendChild(noCell);
+                        row.appendChild(endResultCell);
+                        row.appendChild(noCell);
+                        row.appendChild(endResultCell);
+                        row.appendChild(uomCell);
+                        row.appendChild(estimateCostCell);
+                        row.appendChild(startCell);
+                        row.appendChild(endCell);
+                        row.appendChild(durationCell);
+                        row.appendChild(asIsCell);
+                        row.appendChild(tubeCell);
+                        row.appendChild(hapusCell);
+                        // Tambahkan sel-sel kolom lainnya ke dalam baris
+                        
+
+                        dataBody.appendChild(row);
+                        no++;
+                    });
+                } else {
+                    var row = document.createElement("tr");
+                    var emptyCell = document.createElement("td");
+                    emptyCell.setAttribute("colspan", "10");
+                    emptyCell.textContent = "Data tidak ditemukan";
+                    row.appendChild(emptyCell);
+                    dataBody.appendChild(row);
+                }
+            }
+        };
+        var query = document.getElementById("searchInput_end").value; // Mendapatkan nilai dari input pencarian
+        xmlhttp.open("GET", "search_endresult.php?q=" + query, true); // Mengirim permintaan pencarian dengan query sebagai parameter GET
+        xmlhttp.send();
+    }
+</script>
+
+<!-- search data intermediate-->
+<script>
+    $(document).ready(function() {
+      $('#searchInput_inter').on('input', function() {
+        search();
+      });
+    });
+
+  // <!-- Fungsi untuk melakukan pencarian dan mengganti isi data-body dengan hasil pencarian -->
+    function search() {
+        var xmlhttp;
+        if (window.XMLHttpRequest) {
+            // Untuk browser modern
+            xmlhttp = new XMLHttpRequest();
+        } else {
+            // Untuk browser lama
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var dataBody = document.getElementById("data-body-inter");
+                // Menghapus semua baris data sebelumnya
+                while (dataBody.firstChild) {
+                    dataBody.removeChild(dataBody.firstChild);
+                }
+                // Mendapatkan hasil pencarian dari responseText
+                var result = JSON.parse(this.responseText);
+                if (result.length > 0) {
+                    var no = 1;
+                    // Menambahkan baris data hasil pencarian ke data-body
+                    result.forEach(function(data) {
+                        var row = document.createElement("tr");
+                        var noCell = document.createElement("td");
+                        noCell.textContent = no;
+                        var intermediateCell = document.createElement("td");
+                        intermediateCell.textContent = data.intermediate;
+                        var uomCell = document.createElement("td");
+                        uomCell.textContent = data.uom;
+                        var estimateCostCell = document.createElement("td");
+                        estimateCostCell.textContent = data.estimate_cost;
+                        var startCell = document.createElement("td");
+                        startCell.textContent = data.start;
+                        var endCell = document.createElement("td");
+                        endCell.textContent = data.end;
+                        var durationCell = document.createElement("td");
+                        durationCell.textContent = data.duration;
+                        var asIsCell = document.createElement("td");
+                        asIsCell.textContent = data.asis;
+                        var tubeCell = document.createElement("td");
+                        tubeCell.textContent = data.tube;
+                        var hapusCell = document.createElement("td");
+                        var hapusLink = document.createElement("a");
+                        hapusLink.href = 'delete_intermediate.php?kode_intermediate='+data.kode_intermediate;
+                        hapusLink.onclick = function() {
+                          return confirm('Anda yakin ingin hapus data?');
+                        };
+
+                        var trashIcon = document.createElement("span");
+                        trashIcon.className = "fa fa-trash text-danger";
+
+                        hapusLink.appendChild(trashIcon);
+                        hapusCell.appendChild(hapusLink);
+
+                        row.appendChild(noCell);
+                        row.appendChild(intermediateCell);
+                        row.appendChild(noCell);
+                        row.appendChild(intermediateCell);
+                        row.appendChild(uomCell);
+                        row.appendChild(estimateCostCell);
+                        row.appendChild(startCell);
+                        row.appendChild(endCell);
+                        row.appendChild(durationCell);
+                        row.appendChild(asIsCell);
+                        row.appendChild(tubeCell);
+                        row.appendChild(hapusCell);
+                        // Tambahkan sel-sel kolom lainnya ke dalam baris
+                        
+
+                        dataBody.appendChild(row);
+                        no++;
+                    });
+                } else {
+                    var row = document.createElement("tr");
+                    var emptyCell = document.createElement("td");
+                    emptyCell.setAttribute("colspan", "10");
+                    emptyCell.textContent = "Data tidak ditemukan";
+                    row.appendChild(emptyCell);
+                    dataBody.appendChild(row);
+                }
+            }
+        };
+        var query = document.getElementById("searchInput_inter").value; // Mendapatkan nilai dari input pencarian
+        xmlhttp.open("GET", "search_intermediate.php?q=" + query, true); // Mengirim permintaan pencarian dengan query sebagai parameter GET
+        xmlhttp.send();
+    }
+</script>
+
+<!-- search data activity -->
+<script>
+    $(document).ready(function() {
+      $('#searchInput_act').on('input', function() {
+        search();
+      });
+    });
+    
+    function search() {
+        var xmlhttp;
+        if (window.XMLHttpRequest) {
+            // Untuk browser modern
+            xmlhttp = new XMLHttpRequest();
+        } else {
+            // Untuk browser lama
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var dataBody = document.getElementById("data-body-act");
+                // Menghapus semua baris data sebelumnya
+                while (dataBody.firstChild) {
+                    dataBody.removeChild(dataBody.firstChild);
+                }
+                // Mendapatkan hasil pencarian dari responseText
+                var result = JSON.parse(this.responseText);
+                if (result.length > 0) {
+                    var no = 1;
+                    // Menambahkan baris data hasil pencarian ke data-body
+                    result.forEach(function(data) {
+                        var row = document.createElement("tr");
+                        var noCell = document.createElement("td");
+                        noCell.textContent = no;
+                        var activityCell = document.createElement("td");
+                        activityCell.textContent = data.activity;
+                        var picCell = document.createElement("td");
+                        picCell.textContent = data.pic;
+                        var supportCell = document.createElement("td");
+                        supportCell.textContent = data.support;
+                        var lokasiCell = document.createElement("td");
+                        lokasiCell.textContent = data.lokasi;
+                        var uomCell = document.createElement("td");
+                        uomCell.textContent = data.uom;
+                        var targetCell = document.createElement("td");
+                        targetCell.textContent = data.target;
+                        var estimasi_costCell = document.createElement("td");
+                        estimasi_costCell.textContent = data.estimasi_cost;
+                        var startCell = document.createElement("td");
+                        startCell.textContent = data.start;
+                        var endCell = document.createElement("td");
+                        endCell.textContent = data.end;
+                        var durationCell = document.createElement("td");
+                        durationCell.textContent = data.duration;
+                        var hapusCell = document.createElement("td");
+                        var hapusLink = document.createElement("a");
+                        hapusLink.href = 'delete_activity.php?kode_activity='+data.kode_activity;
+                        hapusLink.onclick = function() {
+                          return confirm('Anda yakin ingin hapus data?');
+                        };
+
+                        var trashIcon = document.createElement("span");
+                        trashIcon.className = "fa fa-trash text-danger";
+
+                        hapusLink.appendChild(trashIcon);
+                        hapusCell.appendChild(hapusLink);
+
+                        row.appendChild(noCell);
+                        row.appendChild(activityCell);
+                        row.appendChild(noCell);
+                        row.appendChild(activityCell);
+                        row.appendChild(picCell);
+                        row.appendChild(supportCell);
+                        row.appendChild(lokasiCell);
+                        row.appendChild(uomCell);
+                        row.appendChild(targetCell);
+                        row.appendChild(estimasi_costCell);
+                        row.appendChild(startCell);
+                        row.appendChild(endCell);
+                        row.appendChild(durationCell);
+                        row.appendChild(hapusCell);
+                        
+                        // Tambahkan sel-sel kolom lainnya ke dalam baris
+                        
+                        dataBody.appendChild(row);
+                        no++;
+                    });
+                } else {
+                    var row = document.createElement("tr");
+                    var emptyCell = document.createElement("td");
+                    emptyCell.setAttribute("colspan", "10");
+                    emptyCell.textContent = "Data tidak ditemukan";
+                    row.appendChild(emptyCell);
+                    dataBody.appendChild(row);
+                }
+            }
+        };
+        var query = document.getElementById("searchInput_act").value; // Mendapatkan nilai dari input pencarian
+        xmlhttp.open("GET", "search_activity.php?q=" + query, true); // Mengirim permintaan pencarian dengan query sebagai parameter GET
+        xmlhttp.send();
+    }
+</script>
 </body>
 </html>
 
-<!-- error masukan data dari db ke multi select pada activity -->
+<!-- myFunction3 tidak terbaca -->

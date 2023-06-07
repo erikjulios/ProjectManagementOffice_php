@@ -38,7 +38,7 @@ target_okt='$okt', target_nov='$nov', target_des='$des' WHERE kode_endresult='$k
 
 
 if (mysqli_query($db, $sql)) {
-    echo "<script>Data berhasil di edit</script>";
+    echo "<script>alert('Data berhasil diedit.');</script>";
     echo "<meta http-equiv='refresh' content='0;url=addProject.php'/>";
     
 } else {

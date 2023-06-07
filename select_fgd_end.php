@@ -26,6 +26,7 @@ $html .= '<thead>
             <th scope="col">Duration</th>
             <th scope="col">As-Is</th>
             <th scope="col">Tube</th>
+            <th scope="col" colspan="2">Action</th>
           </tr>
         </thead>';
 
@@ -34,7 +35,7 @@ $html .= '<tbody>';
 if ($query->num_rows > 0) {
   $no = 1;
   while($data = mysqli_fetch_array($query)){
-$html .='<tr class="cursor"  data-toggle="modal" data-target="#editModal'.$no.'">
+$html .='<tr class="cursor">
                   <td>'.$no.'</td>
                   <td>'.$data['end_result'].'</td>
                   <td>'.$data['uom'].'</td>
@@ -43,7 +44,18 @@ $html .='<tr class="cursor"  data-toggle="modal" data-target="#editModal'.$no.'"
                   <td>'.date('d-m-Y', strtotime($data['end'])).'</td>
                   <td>'.$data['duration'].'</td>
                   <td>'.$data['asis'].'</td>
-                  <td>'.$data['tube'].'</td>';
+                  <td>'.$data['tube'].'</td>
+                  <td>
+                    <a data-toggle="modal" data-target="#editModal'.$no.'">
+                      <span class="fa fa-edit text-primary"></span>
+                    </a>
+                  </td>
+                  <td>
+                    <a href="delete_end_result.php?kode_endresult='.$data['kode_endresult'].'" onclick="return confirm(\'Anda yakin ingin hapus data?\')" >
+                      <span class="fa fa-trash text-danger"></span>
+                    </a>
+                  </td>';
+                  
 $html .= '<div class="modal" id="editModal'.$no.'" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -221,7 +233,7 @@ $html .= '<div class="modal" id="editModal'.$no.'" tabindex="-1" role="dialog" a
             </div>
         </div>
         <div class="modal-footer">
-          <button type="submit" onclick="myFunction('.$no.')" id="update" class="btn btn-primary float-right">Save Changes</button>
+          <button type="submit" onclick="myFunction('.$no.')" id="update" class="btn btn-primary float-right">Update</button>
           <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
         </div>
         </form>

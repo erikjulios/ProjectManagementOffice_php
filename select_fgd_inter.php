@@ -26,6 +26,7 @@ $html .= '<thead>
             <th scope="col">Duration</th>
             <th scope="col">As-Is</th>
             <th scope="col">Tube</th>
+            <th scope="col" colspan="2">Action</th>
           </tr>
         </thead>';
 
@@ -34,7 +35,7 @@ $html .= '<tbody>';
 if ($query->num_rows > 0) {
 $no = 1;
 while($data = mysqli_fetch_array($query)){
-  $html .= '<tr class="cursor"  data-toggle="modal" data-target="#editModal1'. $no.'">
+  $html .= '<tr class="cursor">
   <td>'. $no.'</td>
   <td>'. $data['intermediate'].'</td>
   <td>'. $data['uom'].'</td>
@@ -44,6 +45,16 @@ while($data = mysqli_fetch_array($query)){
   <td>'. $data['duration'].'</td>
   <td>'. $data['asis'].'</td>
   <td>'. $data['tube'].'</td>
+  <td>
+        <a data-toggle="modal" data-target="#editModal1'.$no.'">
+            <span class="fa fa-edit text-primary"></span>
+        </a>
+    </td>
+    <td>
+        <a href="delete_intermediate.php?kode_intermediate='.$data['kode_intermediate'].'" onclick="return confirm(\'Anda yakin ingin hapus data?\')">
+            <span class="fa fa-trash text-danger"></span>
+        </a>
+    </td>
   <div class="modal fade" id="editModal1'. $no.'" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">

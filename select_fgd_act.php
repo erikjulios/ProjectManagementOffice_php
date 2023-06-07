@@ -28,6 +28,7 @@ $html .= '<thead>
             <th scope="col">Start</th>
             <th scope="col">End</th>
             <th scope="col">Duration</th>
+            <th scope="col" colspan="2">Action</th>
           </tr>
         </thead>';
 
@@ -36,7 +37,7 @@ $html .= '<tbody>';
 if ($query->num_rows > 0) {
 $no = 1;
 while($data = mysqli_fetch_array($query)){
-  $html .= '<tr class="cursor"  data-toggle="modal" data-target="#editModal2'. $no.'">
+  $html .= '<tr class="cursor">
   <td>'. $no.'</td>
   <td>'. $data['activity'].'</td>';
   $sqll = "SELECT username FROM db_user WHERE userid=".$data['pic'];
@@ -51,6 +52,16 @@ while($data = mysqli_fetch_array($query)){
   <td>'. date('d-m-Y', strtotime($data['start'])).'</td>
   <td>'. date('d-m-Y', strtotime($data['end'])).'</td>
   <td>'. $data['duration'].'</td>
+  <td>
+    <a data-toggle="modal" data-target="#editModal2'.$no.'">
+      <span class="fa fa-edit text-primary"></span>
+    </a>
+  </td>
+  <td>
+    <a href="delete_activity.php?kode_activity='.$data['kode_activity'].'" onclick="return confirm(\'Anda yakin ingin hapus data?\')">
+      <span class="fa fa-trash text-danger"></span>
+    </a>
+  </td>
   <div class="modal fade" id="editModal2'. $no.'" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -133,6 +144,7 @@ while($data = mysqli_fetch_array($query)){
                         $html .='</select>';
                         $html .='<script src="dist/js/selectt2.js"></script>';
                         $html .='<script>
+                        $(document).on("shown.bs.modal", function () {
                           $("#option_supported_edit'.$no.'").select2({
                               placeholder: "Supported by",
                               templateSelection: function (data, container) {
@@ -142,6 +154,8 @@ while($data = mysqli_fetch_array($query)){
                                 return data.text;
                             }
                           });
+                          console.log("a");
+                        });
                         </script>';
             $html .='</div>
                 </div>
@@ -206,13 +220,13 @@ while($data = mysqli_fetch_array($query)){
                 <div class="col-md-2">
                     <div class="form-group">
                         <label for="nama">Start:</label>
-                        <input type="date" class="form-control pull-right" id="start'.$no.'" name="start" value="'. $data['start'].'" onchange="aksi_act()" required>
+                        <input type="date" class="form-control pull-right" id="start'.$no.'" name="start" value="'. $data['start'].'" onchange="aksi_act2()" required>
                     </div>
                 </div>
                 <div class="col-md-2">
                     <div class="form-group">
                         <label for="nama">End:</label>
-                        <input type="date" class="form-control pull-right" id="end'.$no.'" name="end" value="'. $data['end'].'" onchange="aksi_act()" required>
+                        <input type="date" class="form-control pull-right" id="end'.$no.'" name="end" value="'. $data['end'].'" onchange="aksi_act2()" required>
                     </div>
                 </div>
                 <div class="col-md-1">
