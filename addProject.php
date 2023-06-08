@@ -308,7 +308,7 @@ if(!isset($_SESSION["loggedin"])) header("Location: login.php");
                   <td><?= $data['asis'];?></td>
                   <td><?= $data['tube'];?></td>
                   <td>
-                    <a data-toggle="modal" data-target="#editModal<?= $no;?>">
+                    <a data-toggle="modal" data-target="#editModal<?= $data['kode_endresult'];?>">
                       <span class="fa fa-edit text-primary"></span>
                     </a>
                   </td>
@@ -318,7 +318,7 @@ if(!isset($_SESSION["loggedin"])) header("Location: login.php");
                     </a>
                   </td>
                   <!-- Modal edit end result -->
-                  <div class="modal" id="editModal<?= $no;?>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                  <div class="modal" id="editModal<?= $data['kode_endresult'];?>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg">
                       <div class="modal-content">
                         <div class="modal-header">
@@ -558,7 +558,6 @@ if(!isset($_SESSION["loggedin"])) header("Location: login.php");
                 $no =1;
                 while($data = mysqli_fetch_array($query)) { ?>
                 <tr class="cursor">
-                <!-- data-toggle="modal" data-target="#editModal1<?= $no;?>" -->
                   <td><?= $no;?></td>
                   <td><?= $data['intermediate'];?></td>
                   <td>
@@ -577,7 +576,7 @@ if(!isset($_SESSION["loggedin"])) header("Location: login.php");
                   <td><?= $data['asis'];?></td>
                   <td><?= $data['tube'];?></td>
                   <td>
-                    <a data-toggle="modal" data-target="#editModal1<?= $no;?>">
+                    <a data-toggle="modal" data-target="#editModal1<?= $data['kode_intermediate'];?>">
                       <span class="fa fa-edit text-primary"></span>
                     </a>
                   </td>
@@ -587,7 +586,7 @@ if(!isset($_SESSION["loggedin"])) header("Location: login.php");
                     </a>
                   </td>
                   <!-- Modal edit Intermediate -->
-                  <div class="modal fade" id="editModal1<?= $no;?>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                  <div class="modal" id="editModal1<?= $data['kode_intermediate'];?>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg">
                       <div class="modal-content">
                         <div class="modal-header">
@@ -797,7 +796,7 @@ if(!isset($_SESSION["loggedin"])) header("Location: login.php");
                           </div>
                           <div class="modal-footer">
                             <button type="submit" class="btn btn-primary float-right">Update</button>
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                            <button type="button" class="btn btn-default" id="close" data-dismiss="modal">Tutup</button>
                           </div>
                         </form>
                       </div>
@@ -857,7 +856,6 @@ if(!isset($_SESSION["loggedin"])) header("Location: login.php");
                 $no =1;
                 while($data = mysqli_fetch_array($query)) { ?>
                 <tr class="cursor">
-                <!-- data-toggle="modal" data-target="#editModal2<?= $no;?>" -->
                   <td><?= $no;?></td>
                   <td><?= $data['activity'];?></td>
                   <?php
@@ -905,7 +903,7 @@ if(!isset($_SESSION["loggedin"])) header("Location: login.php");
                   <td><?= date('d-m-Y', strtotime($data['end']));?></td>
                   <td><?= $data['duration'];?></td>
                   <td>
-                    <a data-toggle="modal" data-target="#editModal2<?= $no;?>">
+                    <a data-toggle="modal" data-target="#editModal2<?= $data['kode_activity'];?>">
                       <span class="fa fa-edit text-primary"></span>
                     </a>
                   </td>
@@ -915,7 +913,7 @@ if(!isset($_SESSION["loggedin"])) header("Location: login.php");
                     </a>
                   </td>
                   <!-- Modal Edit Activity -->
-                  <div class="modal fade" id="editModal2<?= $no;?>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                  <div class="modal" id="editModal2<?= $data['kode_activity'];?>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg">
                       <div class="modal-content">
                         <div class="modal-header">
@@ -2899,13 +2897,13 @@ $(document).ready(function() {
 <script>
     $(document).ready(function() {
       $('#searchInput_end').on('input', function() {
-        search();
+        search_end();
       });
     });
 
   // <!-- Fungsi untuk melakukan pencarian dan mengganti isi data-body dengan hasil pencarian -->
     
-    function search() {
+    function search_end() {
         var xmlhttp;
         if (window.XMLHttpRequest) {
             // Untuk browser modern
@@ -2958,6 +2956,28 @@ $(document).ready(function() {
 
                         hapusLink.appendChild(trashIcon);
                         hapusCell.appendChild(hapusLink);
+                        
+                        var editCell = document.createElement("td");
+                        var editLink = document.createElement("a");
+                        editLink.href = '#';
+                        editLink.onclick = function() {
+                          var modal = document.getElementById("editModal"+data.kode_endresult);
+                          // Tampilkan modal
+                          var modalInstance = new bootstrap.Modal(modal);
+                          modalInstance.show();
+
+                          // Tambahkan event listener untuk menutup modal saat diklik pada tombol close
+                          var closeButton = modal.querySelector(".close");
+                          closeButton.addEventListener("click", function() {
+                            modalInstance.hide();
+                          });
+                        };
+
+                        var editIcon = document.createElement("span");
+                        editIcon.className = "fa fa-edit text-primary";
+
+                        editLink.appendChild(editIcon);
+                        editCell.appendChild(editLink);
 
                         row.appendChild(noCell);
                         row.appendChild(endResultCell);
@@ -2970,7 +2990,9 @@ $(document).ready(function() {
                         row.appendChild(durationCell);
                         row.appendChild(asIsCell);
                         row.appendChild(tubeCell);
+                        row.appendChild(editCell);
                         row.appendChild(hapusCell);
+                        
                         // Tambahkan sel-sel kolom lainnya ke dalam baris
                         
 
@@ -2997,12 +3019,12 @@ $(document).ready(function() {
 <script>
     $(document).ready(function() {
       $('#searchInput_inter').on('input', function() {
-        search();
+        search_inter();
       });
     });
 
   // <!-- Fungsi untuk melakukan pencarian dan mengganti isi data-body dengan hasil pencarian -->
-    function search() {
+    function search_inter() {
         var xmlhttp;
         if (window.XMLHttpRequest) {
             // Untuk browser modern
@@ -3055,6 +3077,29 @@ $(document).ready(function() {
 
                         hapusLink.appendChild(trashIcon);
                         hapusCell.appendChild(hapusLink);
+                        
+                        var editCell = document.createElement("td");
+                        var editLink = document.createElement("a");
+                        editLink.href = '#';
+                        editLink.onclick = function() {
+                          var modal = document.getElementById("editModal1"+data.kode_intermediate);
+
+                          // Tampilkan modal
+                          var modalInstance = new bootstrap.Modal(modal);
+                          modalInstance.show();
+
+                          // Tambahkan event listener untuk menutup modal saat diklik pada tombol close
+                          var closeButton = modal.querySelector(".close");
+                          closeButton.addEventListener("click", function() {
+                            modalInstance.hide();
+                          });
+                        };
+
+                        var editIcon = document.createElement("span");
+                        editIcon.className = "fa fa-edit text-primary";
+
+                        editLink.appendChild(editIcon);
+                        editCell.appendChild(editLink);
 
                         row.appendChild(noCell);
                         row.appendChild(intermediateCell);
@@ -3067,6 +3112,7 @@ $(document).ready(function() {
                         row.appendChild(durationCell);
                         row.appendChild(asIsCell);
                         row.appendChild(tubeCell);
+                        row.appendChild(editCell);
                         row.appendChild(hapusCell);
                         // Tambahkan sel-sel kolom lainnya ke dalam baris
                         
@@ -3094,11 +3140,11 @@ $(document).ready(function() {
 <script>
     $(document).ready(function() {
       $('#searchInput_act').on('input', function() {
-        search();
+        search_act();
       });
     });
     
-    function search() {
+    function search_act() {
         var xmlhttp;
         if (window.XMLHttpRequest) {
             // Untuk browser modern
@@ -3156,6 +3202,29 @@ $(document).ready(function() {
                         hapusLink.appendChild(trashIcon);
                         hapusCell.appendChild(hapusLink);
 
+                        var editCell = document.createElement("td");
+                        var editLink = document.createElement("a");
+                        editLink.href = '#';
+                        editLink.onclick = function() {
+                          var modal = document.getElementById("editModal2"+data.kode_activity);
+
+                          // Tampilkan modal
+                          var modalInstance = new bootstrap.Modal(modal);
+                          modalInstance.show();
+
+                          // Tambahkan event listener untuk menutup modal saat diklik pada tombol close
+                          var closeButton = modal.querySelector(".close");
+                          closeButton.addEventListener("click", function() {
+                            modalInstance.hide();
+                          });
+                        };
+
+                        var editIcon = document.createElement("span");
+                        editIcon.className = "fa fa-edit text-primary";
+
+                        editLink.appendChild(editIcon);
+                        editCell.appendChild(editLink);
+
                         row.appendChild(noCell);
                         row.appendChild(activityCell);
                         row.appendChild(noCell);
@@ -3169,6 +3238,7 @@ $(document).ready(function() {
                         row.appendChild(startCell);
                         row.appendChild(endCell);
                         row.appendChild(durationCell);
+                        row.appendChild(editCell);
                         row.appendChild(hapusCell);
                         
                         // Tambahkan sel-sel kolom lainnya ke dalam baris

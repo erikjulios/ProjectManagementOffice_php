@@ -9,8 +9,6 @@ $kode_activity = $_POST['kode_activity'];
 $activity = $_POST['activity'];
 $pic = $_POST['pic'];
 $support = $_POST['support'];
-// $support = implode(",", $_POST['support']);
-// print_r ($support);
 $lokasi = $_POST['lokasi'];
 $uom = $_POST['uom'];
 $target = $_POST['target'];
@@ -38,7 +36,6 @@ $sql = "UPDATE db_target_activity SET tanggal_modified=NOW(), user_modified='$us
         duration='$duration', target_jan='$jan', target_feb='$feb', target_mar='$mar', 
         target_apr='$apr', target_mei='$mei', target_jun='$jun', target_jul='$jul', target_aug='$aug', 
         target_sep='$sep', target_okt='$okt', target_nov='$nov', target_des='$des'  WHERE kode_activity='$kode_activity'";
-//  supported_by='$support',
 if (mysqli_query($db, $sql)) {
     echo "<script>alert('Data berhasil diedit.');</script>";
     echo "<meta http-equiv='refresh' content='0;url=addProject.php'/>";
