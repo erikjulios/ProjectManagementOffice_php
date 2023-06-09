@@ -125,31 +125,31 @@ $html .= '<div class="modal" id="editModal'.$no.'" tabindex="-1" role="dialog" a
                 <div class="col-md-2">
                     <div class="form-group">
                         <label>Start:</label>
-                        <input type="date" class="form-control pull-right" id="start'.$no.'" value="'. $data['start'].'" name="start" onchange="aksi()" required>
+                        <input type="date" class="form-control pull-right" id="start'.$no.'" value="'.$data['start'].'" name="start" onchange="duration_end('.$no.')" required>
                     </div>
                 </div>
                 <div class="col-md-2">
                     <div class="form-group">
                         <label>End:</label>
-                        <input type="date" class="form-control pull-right" id="end'.$no.'" value="'. $data['end'].'" name="end" onchange="aksi()" required>
+                        <input type="date" class="form-control pull-right" id="end'.$no.'" value="'.$data['end'].'" name="end" onchange="duration_end('.$no.')" required>
                     </div>
                 </div>
                 <div class="col-md-1">
                     <div class="form-group">
                         <label>Duration:</label>
-                        <input type="text" class="form-control pull-right" id="duration'.$no.'" value="'. $data['duration'].'" name="duration" required>
+                        <input type="text" class="form-control pull-right" id="duration'.$no.'" value="'.$data['duration'].'" name="duration" readonly  required>
                     </div>
                 </div>
                 <div class="col-md-1">
                     <div class="form-group">
                         <label>As-Is:</label>
-                        <input type="text" class="form-control pull-right" id="asis'.$no.'" value="'. $data['asis'].'" name="asis" required>
+                        <input type="text" class="form-control pull-right" id="asis'.$no.'" value="'.$data['asis'].'" name="asis" required>
                     </div>
                 </div>
                 <div class="col-md-1">
                     <div class="form-group">
                         <label>Tube:</label>
-                        <input type="text" class="form-control pull-right" value="'. $data['tube'].'" id="tube'.$no.'" name="tube" required>
+                        <input type="text" class="form-control pull-right" value="'.$data['tube'].'" id="tube'.$no.'" name="tube" required>
                     </div>
                 </div>
               </div>
@@ -160,73 +160,73 @@ $html .= '<div class="modal" id="editModal'.$no.'" tabindex="-1" role="dialog" a
                   <div class="col-md-2">
                       <div class="form-group">
                           <label>Januari :</label>
-                          <input type="text" class="form-control pull-right" id="jan'.$no.'" name="jan" value="'. $data['target_jan'].'" required>
+                          <input type="text" class="form-control pull-right" id="jan'.$no.'" name="jan" value="'.$data['target_jan'].'" required>
                       </div>
                   </div>
                   <div class="col-md-2">
                       <div class="form-group">
                           <label>Februari :</label>
-                          <input type="text" class="form-control pull-right" id="feb'.$no.'" name="feb" value="'. $data['target_feb'].'" required>
+                          <input type="text" class="form-control pull-right" id="feb'.$no.'" name="feb" value="'.$data['target_feb'].'" required>
                       </div>
                   </div>
                   <div class="col-md-2">
                       <div class="form-group">
                           <label>Maret :</label>
-                          <input type="text" class="form-control pull-right" id="mar'.$no.'" name="mar" value="'. $data['target_mar'].'" required>
+                          <input type="text" class="form-control pull-right" id="mar'.$no.'" name="mar" value="'.$data['target_mar'].'" required>
                       </div>
                   </div>
                   <div class="col-sm-2">
                       <div class="form-group">
                           <label>April :</label>
-                          <input type="text" class="form-control pull-right" id="apr'.$no.'" name="apr" value="'. $data['target_apr'].'" required>
+                          <input type="text" class="form-control pull-right" id="apr'.$no.'" name="apr" value="'.$data['target_apr'].'" required>
                       </div>
                   </div>
                   <div class="col-sm-2">
                       <div class="form-group">
                           <label>Mei :</label>
-                          <input type="text" class="form-control pull-right" id="mei'.$no.'" name="mei" value="'. $data['target_mei'].'" required>
+                          <input type="text" class="form-control pull-right" id="mei'.$no.'" name="mei" value="'.$data['target_mei'].'" required>
                       </div>
                   </div>
                   <div class="col-sm-2">
                       <div class="form-group">
                           <label>Juni :</label>
-                          <input type="text" class="form-control pull-right" id="jun'.$no.'" name="jun" value="'. $data['target_jun'].'" required>
+                          <input type="text" class="form-control pull-right" id="jun'.$no.'" name="jun" value="'.$data['target_jun'].'" required>
                       </div>
                   </div>
                   <div class="col-sm-2">
                       <div class="form-group">
                           <label>Juli :</label>
-                          <input type="text" class="form-control pull-right" id="jul'.$no.'" name="jul" value="'. $data['target_jul'].'" required>
+                          <input type="text" class="form-control pull-right" id="jul'.$no.'" name="jul" value="'.$data['target_jul'].'" required>
                       </div>
                   </div>
                   <div class="col-sm-2">
                       <div class="form-group">
                           <label>Agustus :</label>
-                          <input type="text" class="form-control pull-right" id="aug'.$no.'" name="aug" value="'. $data['target_aug'].'" required>
+                          <input type="text" class="form-control pull-right" id="aug'.$no.'" name="aug" value="'.$data['target_aug'].'" required>
                       </div>
                   </div>
                   <div class="col-sm-2">
                       <div class="form-group">
                           <label>September :</label>
-                          <input type="text" class="form-control pull-right" id="sep'.$no.'" name="sep" value="'. $data['target_sep'].'" required>
+                          <input type="text" class="form-control pull-right" id="sep'.$no.'" name="sep" value="'.$data['target_sep'].'" required>
                       </div>
                   </div>
                   <div class="col-sm-2">
                       <div class="form-group">
                           <label>Oktober :</label>
-                          <input type="text" class="form-control pull-right" id="okt'.$no.'" name="okt" value="'. $data['target_okt'].'" required>
+                          <input type="text" class="form-control pull-right" id="okt'.$no.'" name="okt" value="'.$data['target_okt'].'" required>
                       </div>
                   </div>
                   <div class="col-sm-2">
                       <div class="form-group">
                           <label>November :</label>
-                          <input type="text" class="form-control pull-right" id="nov'.$no.'" name="nov" value="'. $data['target_nov'].'" required>
+                          <input type="text" class="form-control pull-right" id="nov'.$no.'" name="nov" value="'.$data['target_nov'].'" required>
                       </div>
                   </div>
                   <div class="col-sm-2">
                       <div class="form-group">
                           <label>Desember :</label>
-                          <input type="text" class="form-control pull-right" id="des'.$no.'" name="des" value="'. $data['target_des'].'" required>
+                          <input type="text" class="form-control pull-right" id="des'.$no.'" name="des" value="'.$data['target_des'].'" required>
                       </div>
                   </div>
                 </div>

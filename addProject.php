@@ -2620,7 +2620,7 @@ function aksi_act() {
   }
 }
 
-function aksi_act2(no) {
+function duration_end(no) {
   // Ambil nilai tanggal dari input
   var startDate = new Date(document.getElementById("start"+no).value);
   var endDate = new Date(document.getElementById("end"+no).value);
@@ -2642,6 +2642,53 @@ function aksi_act2(no) {
     document.getElementById("duration"+no).value = durasi;
   }
 }
+
+function duration_inter(no) {
+  // Ambil nilai tanggal dari input
+  var startDate = new Date(document.getElementById("start"+no).value);
+  var endDate = new Date(document.getElementById("end"+no).value);
+
+  // Hitung selisih tanggal dalam milidetik
+  var selisih = endDate.getTime() - startDate.getTime();
+
+  // Konversi selisih tanggal dari milidetik menjadi hari
+  var durasi = Math.ceil(selisih / (1000 * 60 * 60 * 24));
+  if (durasi < 0) {
+    document.getElementById("duration"+no).value = 0;
+    alert('Masukan tanggal yang sesuai');
+    document.getElementById("end"+no).value = "";
+  }
+  else if(isNaN(durasi)) {
+    document.getElementById("duration"+no).value = 0;
+  }
+  else {
+    document.getElementById("duration"+no).value = durasi;
+  }
+}
+
+function duration_act(no) {
+  // Ambil nilai tanggal dari input
+  var startDate = new Date(document.getElementById("start"+no).value);
+  var endDate = new Date(document.getElementById("end"+no).value);
+
+  // Hitung selisih tanggal dalam milidetik
+  var selisih = endDate.getTime() - startDate.getTime();
+
+  // Konversi selisih tanggal dari milidetik menjadi hari
+  var durasi = Math.ceil(selisih / (1000 * 60 * 60 * 24));
+  if (durasi < 0) {
+    document.getElementById("duration"+no).value = 0;
+    alert('Masukan tanggal yang sesuai');
+    document.getElementById("end"+no).value = "";
+  }
+  else if(isNaN(durasi)) {
+    document.getElementById("duration"+no).value = 0;
+  }
+  else {
+    document.getElementById("duration"+no).value = durasi;
+  }
+}
+
   
 //   $(document).on("shown.bs.modal", function () {
 //   // Ambil nilai tanggal dari input
@@ -2933,7 +2980,7 @@ $(document).ready(function() {
                         var uomCell = document.createElement("td");
                         uomCell.textContent = data.uom;
                         var estimateCostCell = document.createElement("td");
-                        estimateCostCell.textContent = data.estimate_cost;
+                        estimateCostCell.textContent ="Rp."+data.estimate_cost;
                         var startCell = document.createElement("td");
                         startCell.textContent = data.start;
                         var endCell = document.createElement("td");
@@ -3054,7 +3101,7 @@ $(document).ready(function() {
                         var uomCell = document.createElement("td");
                         uomCell.textContent = data.uom;
                         var estimateCostCell = document.createElement("td");
-                        estimateCostCell.textContent = data.estimate_cost;
+                        estimateCostCell.textContent = "Rp."+data.estimate_cost;
                         var startCell = document.createElement("td");
                         startCell.textContent = data.start;
                         var endCell = document.createElement("td");
@@ -3182,7 +3229,7 @@ $(document).ready(function() {
                         var targetCell = document.createElement("td");
                         targetCell.textContent = data.target;
                         var estimasi_costCell = document.createElement("td");
-                        estimasi_costCell.textContent = data.estimasi_cost;
+                        estimasi_costCell.textContent = "Rp."+data.estimasi_cost;
                         var startCell = document.createElement("td");
                         startCell.textContent = data.start;
                         var endCell = document.createElement("td");

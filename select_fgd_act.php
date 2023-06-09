@@ -220,19 +220,19 @@ while($data = mysqli_fetch_array($query)){
                 <div class="col-md-2">
                     <div class="form-group">
                         <label for="nama">Start:</label>
-                        <input type="date" class="form-control pull-right" id="start'.$no.'" name="start" value="'. $data['start'].'" onchange="aksi_act2()" required>
+                        <input type="date" class="form-control pull-right" id="start'.$no.'" name="start" value="'. $data['start'].'" onchange="duration_act('.$no.')" required>
                     </div>
                 </div>
                 <div class="col-md-2">
                     <div class="form-group">
                         <label for="nama">End:</label>
-                        <input type="date" class="form-control pull-right" id="end'.$no.'" name="end" value="'. $data['end'].'" onchange="aksi_act2()" required>
+                        <input type="date" class="form-control pull-right" id="end'.$no.'" name="end" value="'. $data['end'].'" onchange="duration_act('.$no.')" required>
                     </div>
                 </div>
                 <div class="col-md-1">
                     <div class="form-group">
                         <label for="nama">Duration:</label>
-                        <input type="text" class="form-control pull-right" id="duration'.$no.'" name="duration" value="'. $data['duration'].'" >
+                        <input type="text" class="form-control pull-right" id="duration'.$no.'" name="duration" value="'. $data['duration'].'" required readonly >
                     </div>
                 </div>
               </div>
