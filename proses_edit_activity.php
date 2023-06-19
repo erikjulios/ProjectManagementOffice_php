@@ -8,7 +8,12 @@ $kode_intermediate = $_POST['kode_intermediate'];
 $kode_activity = $_POST['kode_activity'];
 $activity = $_POST['activity'];
 $pic = $_POST['pic'];
-$support = $_POST['support'];
+if (isset($_POST['support'])) {
+    $support = $_POST['support'];
+}
+if (isset($_POST['support1'])) {
+    $support = implode(',',$_POST['support1']);
+}
 $lokasi = $_POST['lokasi'];
 $uom = $_POST['uom'];
 $target = $_POST['target'];

@@ -177,9 +177,12 @@ if(!isset($_SESSION["loggedin"])) header("Location: login.php");
     <!-- Menu button -->
     <div class="content">
       <div class="container-fluid">
-        <!-- tabel end result -->
+        <!-- tabel fgd -->
         <div id="endresult">
-          <div class="row justify-content-end">
+          <div class="row justify-content-between ">
+            <div class="col-3 pt-2 mt-2">
+              <input type="text" class="form-control" id="searchInput_fgd" placeholder="Search ..." name="search">
+            </div>
             <div class="col-2 mt-3">
               <button type="button"  data-toggle="modal" data-target=".bd-example-modal-lg" class="btn btn-secondary">
                 + Add FGD
@@ -196,9 +199,10 @@ if(!isset($_SESSION["loggedin"])) header("Location: login.php");
                   <th scope="col">Nama FGD</th>
                   <th scope="col">PIC</th>
                   <th scope="col">Team</th>
+                  <th scope="col" colspan="2">Action</th>
                   </tr>
               </thead>
-              <tbody>
+              <tbody id="data-body-fgd">
                 <?php 
                 include('proses/koneksi.php');
                 $sql = "SELECT * FROM db_fgd";
@@ -206,7 +210,7 @@ if(!isset($_SESSION["loggedin"])) header("Location: login.php");
                 if ($query->num_rows > 0) {
                 $no =1;
                 while($data = mysqli_fetch_array($query)) { ?>
-                <tr class="cursor"  data-toggle="modal" data-target="#editModal<?= $no;?>">
+                <tr class="cursor">
                   <td><?= $no;?></td>
                   <td><?= $data['tahun_fgd'];?></td>
                   <td><?= $data['nama_fgd'];?></td>
@@ -231,8 +235,18 @@ if(!isset($_SESSION["loggedin"])) header("Location: login.php");
                   $team_names_str = implode(", ", $team_names); 
                   echo '<td>'.$team_names_str.'</td>';
                   ?>
-                  <!-- Modal -->
-                  <div class="modal fade" id="editModal<?= $no;?>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                  <td>
+                    <a data-toggle="modal" data-target="#editModal<?= $data['kode_fgd'];?>">
+                      <span class="fa fa-edit text-primary"></span>
+                    </a>
+                  </td>
+                  <td>
+                    <a href="delete_fgd.php?kode_fgd=<?= $data['kode_fgd'];?>" onclick="return confirm('Anda yakin ingin hapus data?')">
+                      <span class="fa fa-trash text-danger"></span>
+                    </a>
+                  </td>
+                  <!-- Modal edit fgd-->
+                  <div class="modal fade" id="editModal<?= $data['kode_fgd'];?>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                       <div class="modal-content">
                         <div class="modal-header">
@@ -252,13 +266,72 @@ if(!isset($_SESSION["loggedin"])) header("Location: login.php");
                               <label for="nama_fgd">Nama FGD</label>
                               <input type="text" class="form-control" id="nama_fgd" name="nama_fgd" value="<?= $data['nama_fgd'];?>" required>
                             </div>
-                            <div class="form-group">
-                              <label for="pic">PIC</label>
-                              <input type="text" class="form-control" id="pic" name="pic" value="<?= $data['pic'];?>" required>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                  <label for="nama">PIC:</label>
+                                  <select class="form-control pull-right" name="pic" id="pic" required>
+                                    <?php
+                                        include "proses/koneksi.php";
+                                        $sql1 = "SELECT * FROM db_user";
+                                        $query1 = mysqli_query($db, $sql1);
+                                        foreach($query1 as $row) {
+                                          echo '<option value="'.$row['userid'].'"';
+                                          if ($row['userid'] == $data['pic']) {
+                                            echo 'selected';
+                                          }
+                                          echo '>'.$row['username'].'</option>';
+                                        }
+                                      ?>
+                                  </select>
+                              </div>
                             </div>
-                            <div class="form-group">
-                              <label for="team">Team</label>
-                              <input type="text" class="form-control" id="team" name="team" value="<?= $data['team'];?>" required>
+                            <div class="col-md-7">
+                                <div class="form-group">
+                                    <label for="nama">Team:</label>
+                                    <select id="option_team_edit<?= $no?>" class="form-control pull-right" name="team[]" multiple="multiple" required>
+                                      <?php
+                                        include "proses/koneksi.php";
+                                        $sql1 = "SELECT * FROM db_user";
+                                        $query1 = mysqli_query($db, $sql1);
+                                        // masukan data dari database ke multiselectt
+                                        foreach($query1 as $row) {
+                                          echo '<option value="'.$row['userid'].'"';
+                                          if (strpos($data['team'], ',') !== false) {
+                                            //id masi muncul cuma 1 terakhir
+                                            $array = explode(',', $data['team']);
+                                            foreach ($array as $value) {
+                                              if ($row['userid'] == $value) {
+                                                echo 'selected';
+                                              }
+                                            }
+                                          }
+                                          else{
+                                            if ($row['userid'] == $data['team']) {
+                                              echo 'selected';
+                                            }
+                                          }                                               
+                                          echo '>'.$row['username'].'</option>';
+                                        }
+                                      ?>
+                                    </select>
+                                    <!-- select2 -->
+                                    <script src="dist/js/selectt2.js"></script>
+                                    <script>
+                                      $(document).on('shown.bs.modal', function () {
+                                          // Inisialisasi Select2 di dalam modal
+                                          $("#option_team_edit<?= $no?>").select2({
+                                              placeholder: "Team",
+                                              templateSelection: function (data, container) {
+                                                  if (data.selected) {
+                                                      $(container).css("color", "black");
+                                                  }
+                                                  return data.text;
+                                              }
+                                          });
+                                      });
+                                    </script>
+                                    <!-- <input type="text" class="form-control pull-right" id="nama" name="support" value="<?= $data[''];?>" required> -->
+                                </div>
                             </div>
                             
                         </div>
@@ -449,4 +522,113 @@ $(document).ready(function() {
           placeholder: "Pilih Team"
       });
   });
+</script>
+<script>
+    $(document).ready(function() {
+      $('#searchInput_fgd').on('input', function() {
+        search_fgd();
+      });
+    });
+
+  // <!-- Fungsi untuk melakukan pencarian dan mengganti isi data-body dengan hasil pencarian -->
+  function search_fgd() {
+      var xmlhttp;
+      if (window.XMLHttpRequest) {
+          // Untuk browser modern
+          xmlhttp = new XMLHttpRequest();
+      } else {
+          // Untuk browser lama
+          xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+      }
+      xmlhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+              var dataBody = document.getElementById("data-body-fgd");
+              // Menghapus semua baris data sebelumnya
+              while (dataBody.firstChild) {
+                  dataBody.removeChild(dataBody.firstChild);
+              }
+              // Mendapatkan hasil pencarian dari responseText
+              var result = JSON.parse(this.responseText);
+              if (result.length > 0) {
+                  var no = 1;
+                  // Menambahkan baris data hasil pencarian ke data-body
+                  result.forEach(function(data) {
+                      var row = document.createElement("tr");
+                      var noCell = document.createElement("td");
+                      noCell.textContent = no;
+                      var kode_fgd = document.createElement("td");
+                      kode_fgd.textContent = data.kode_fgd;                      
+                      var tahun_fgdCell = document.createElement("td");
+                      tahun_fgdCell.textContent = data.tahun_fgd;                      
+                      var nama_fgd = document.createElement("td");
+                      nama_fgd.textContent = data.nama_fgd;
+                      var pic = document.createElement("td");
+                      pic.textContent = data.pic;
+                      var team = document.createElement("td");
+                      team.textContent = data.team;
+                      var hapusCell = document.createElement("td");
+                      var hapusLink = document.createElement("a");
+                      hapusLink.href = 'delete_fgd.php?kode_fgd='+data.kode_fgd;
+                      hapusLink.onclick = function() {
+                        return confirm('Anda yakin ingin hapus data?');
+                      };
+
+                      var trashIcon = document.createElement("span");
+                      trashIcon.className = "fa fa-trash text-danger";
+
+                      hapusLink.appendChild(trashIcon);
+                      hapusCell.appendChild(hapusLink);
+                      
+                      var editCell = document.createElement("td");
+                      var editLink = document.createElement("a");
+                      editLink.href = '#';
+                      editLink.onclick = function() {
+                        var modal = document.getElementById("editModal"+data.kode_fgd);
+
+                        // Tampilkan modal
+                        var modalInstance = new bootstrap.Modal(modal);
+                        modalInstance.show();
+
+                        // Tambahkan event listener untuk menutup modal saat diklik pada tombol close
+                        var closeButton = modal.querySelector(".close");
+                        closeButton.addEventListener("click", function() {
+                          modalInstance.hide();
+                        });
+                      };
+
+                      var editIcon = document.createElement("span");
+                      editIcon.className = "fa fa-edit text-primary";
+
+                      editLink.appendChild(editIcon);
+                      editCell.appendChild(editLink);
+
+                      row.appendChild(noCell);
+                      row.appendChild(tahun_fgdCell);
+                      row.appendChild(noCell);
+                      row.appendChild(tahun_fgdCell);
+                      row.appendChild(nama_fgd);
+                      row.appendChild(pic);
+                      row.appendChild(team);
+                      row.appendChild(editCell);
+                      row.appendChild(hapusCell);
+                      // Tambahkan sel-sel kolom lainnya ke dalam baris
+                      
+
+                      dataBody.appendChild(row);
+                      no++;
+                  });
+              } else {
+                  var row = document.createElement("tr");
+                  var emptyCell = document.createElement("td");
+                  emptyCell.setAttribute("colspan", "10");
+                  emptyCell.textContent = "Data tidak ditemukan";
+                  row.appendChild(emptyCell);
+                  dataBody.appendChild(row);
+              }
+          }
+      };
+      var query = document.getElementById("searchInput_fgd").value; // Mendapatkan nilai dari input pencarian
+      xmlhttp.open("GET", "search_fgd.php?q=" + query, true); // Mengirim permintaan pencarian dengan query sebagai parameter GET
+      xmlhttp.send();
+    }
 </script>

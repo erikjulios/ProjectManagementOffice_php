@@ -12,6 +12,7 @@ if ($query) {
 }
 }
 else{
-    echo "<meta http-equiv='refresh' content='0;url=addproject.php'/>";
+    // echo "<meta http-equiv='refresh' content='0;url=addproject.php'/>";
+    echo "<script>window.location.href = 'addproject.php';</script>";
 }
 ?>

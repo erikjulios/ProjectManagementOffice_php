@@ -117,7 +117,7 @@ while($data = mysqli_fetch_array($query)){
                   $html .= '</select>
                   </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <div class="form-group">
                         <label for="nama">Supported By:</label>
                         <select id="option_supported_edit'.$no.'" class="form-control pull-right" name="support[]" multiple="multiple" required>';

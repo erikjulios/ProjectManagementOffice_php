@@ -195,6 +195,7 @@ if(!isset($_SESSION["loggedin"])) header("Location: login.php");
                   <th scope="col">Jabatan</th>
                   <th scope="col">Otoritas</th>
                   <th scope="col">Status</th>
+                  <th scope="col" colspan="2">Action</th>
                   </tr>
               </thead>
               <tbody>
@@ -205,7 +206,7 @@ if(!isset($_SESSION["loggedin"])) header("Location: login.php");
                 if ($query->num_rows > 0) {
                 $no =1;
                 while($data = mysqli_fetch_array($query)) { ?>
-                <tr class="cursor"  data-toggle="modal" data-target="#editModal<?= $no;?>">
+                <tr class="cursor" >
                   <td><?= $no;?></td>
                   <td><?= $data['username'];?></td>
                   <td><?= $data['email'];?></td>
@@ -213,8 +214,18 @@ if(!isset($_SESSION["loggedin"])) header("Location: login.php");
                   <td><?= $data['jabatan'];?></td>
                   <td><?= $data['otoritas'];?></td>
                   <td><?= $data['status'];?></td>
+                  <td>
+                    <a data-toggle="modal" data-target="#editModal<?= $data['userid'];?>">
+                      <span class="fa fa-edit text-primary"></span>
+                    </a>
+                  </td>
+                  <td>
+                    <a href="delete_team.php?userid=<?= $data['userid'];?>" onclick="return confirm('Anda yakin ingin hapus data?')">
+                      <span class="fa fa-trash text-danger"></span>
+                    </a>
+                  </td>
                   <!-- Modal edit team -->
-                  <div class="modal fade" id="editModal<?= $no;?>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                  <div class="modal fade" id="editModal<?= $data['userid'];?>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                       <div class="modal-content">
                         <div class="modal-header">
