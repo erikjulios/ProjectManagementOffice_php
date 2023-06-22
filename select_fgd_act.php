@@ -9,7 +9,7 @@ if ($kode_fgd == 'all') {
   $sql = "SELECT * FROM db_target_activity";
 } else {
   // Fetch filtered data
-  $sql = "SELECT * FROM db_target_activity WHERE kode_fgd = '$kode_fgd' AND user_create = '$username'";
+  $sql = "SELECT * FROM db_target_activity a LEFT JOIN db_target_intermediate i ON a.kode_intermediate = i.kode_intermediate WHERE a.kode_fgd = '$kode_fgd' AND a.user_create = '$username'";
 }
 $query = mysqli_query($db, $sql);
 
@@ -75,6 +75,24 @@ while($data = mysqli_fetch_array($query)){
             <div class="row mb-3">
               <div class="col-md-3">
                   <div class="form-group">
+                      <label>End Result :</label>
+                      <select class="form-control" name="kode_intermediate" id="kode_intermediate'.$no.'" required>;';
+                            include "proses/koneksi.php";
+                            $sql1 = "SELECT * FROM db_target_intermediate";
+                            $query1 = mysqli_query($db, $sql1);
+                            foreach($query1 as $row) {
+                      $html .= '<option value="'.$row['kode_endresult'].'"';
+                              if ($row['kode_endresult'] == $data['kode_endresult']) {
+                      $html .= 'selected';
+                              }
+                              // select dulu dari end result buat nampilin nama atau pake left join ke end result
+                      $html .= '>'.$row['kode_endresult'].'</option>';
+                            }
+                      $html .= '</select>
+                  </div>
+              </div>
+              <div class="col-md-3">
+                  <div class="form-group">
                       <label>Intermediate :</label>
                       <select class="form-control" name="kode_intermediate" id="kode_intermediate'.$no.'" required>;';
                             include "proses/koneksi.php";
@@ -104,16 +122,38 @@ while($data = mysqli_fetch_array($query)){
                     <div class="form-group">
                       <label for="nama">PIC:</label>
                       <select class="form-control pull-right" name="pic" id="pic'.$no.'" required>';
-                            include "proses/koneksi.php";
-                            $sql1 = "SELECT * FROM db_user";
-                            $query1 = mysqli_query($db, $sql1);
-                            foreach($query1 as $row) {
-                          $html .= '<option value="'.$row['userid'].'"';
-                              if ($row['userid'] == $data['pic']) {
-                          $html .= 'selected';
-                              }
-                          $html .= '>'.$row['username'].'</option>';
+                          include "proses/koneksi.php";
+                          $sql = "SELECT pic,team FROM db_fgd";
+                          $query = mysqli_query($db, $sql);
+                          $anggota_fgd = array();
+                          foreach($query as $row) {
+                            $anggota = $row['pic'] . ',' . $row['team'];
+                            $anggota = explode(',', $anggota);
+                            $anggota_fgd = $anggota;
+                          }
+                          $getNama = "SELECT userid,username FROM db_user";
+                          $execute_nama = mysqli_query($db, $getNama);
+                          $daftar_user= array();
+                          
+                          foreach ($execute_nama as $key) {
+                            $daftar_user[] = array(
+                              'id' => $key['userid'],
+                              'nama' => $key['username'],
+                            );
+                          }
+
+                          foreach ($anggota_fgd as $key) {
+                            foreach ($daftar_user as $value) {
+                              if($value['id'] == $key){
+                                $html .= '<option value="'.$value['id'].'"';
+                                if ($value['id'] == $data['pic']) {
+                                  $html .= 'selected';
+                                      }
+                                  $html .= '>'.$value['nama'].'</option>';
+                                }
                             }
+                            
+                          }
                   $html .= '</select>
                   </div>
                 </div>
@@ -121,26 +161,50 @@ while($data = mysqli_fetch_array($query)){
                     <div class="form-group">
                         <label for="nama">Supported By:</label>
                         <select id="option_supported_edit'.$no.'" class="form-control pull-right" name="support[]" multiple="multiple" required>';
-                            include "proses/koneksi.php";
-                            $sql1 = "SELECT * FROM db_user";
-                            $query1 = mysqli_query($db, $sql1);
-                            foreach($query1 as $row) {
-                              $html .= '<option value="'.$row['userid'].'"';
+                        include "proses/koneksi.php";
+                        $sql = "SELECT pic,team FROM db_fgd";
+                        $query = mysqli_query($db, $sql);
+                        $anggota_fgd = array();
+                        foreach($query as $row) {
+                          $anggota = $row['pic'] . ',' . $row['team'];
+                          $anggota = explode(',', $anggota);
+                          $anggota_fgd = $anggota;
+                        }
+                        $getNama = "SELECT userid,username FROM db_user";
+                        $execute_nama = mysqli_query($db, $getNama);
+                        $daftar_user= array();
+                        
+                        foreach ($execute_nama as $key) {
+                          $daftar_user[] = array(
+                            'id' => $key['userid'],
+                            'nama' => $key['username'],
+                          );
+                        }
+
+                        foreach ($anggota_fgd as $key) {
+                          foreach ($daftar_user as $value) {
+                            if($value['id'] == $key){
+
+
+                              $html .= '<option value="'.$value['id'].'"';
                               if (strpos($data['supported_by'], ',') !== false) {
                                 $array = explode(',', $data['supported_by']);
-                                foreach ($array as $value) {
-                                  if ($row['userid'] == $value) {
+                                foreach ($array as $row) {
+                                  if ($value['id'] == $row) {
                                     $html .='selected';
                                   }
                                 }
                               }
                               else{
-                                if ($row['userid'] == $data['supported_by']) {
+                                if ($value['id'] == $data['supported_by']) {
                                   $html .='selected';
                                 }
                               }                                               
-                              $html .= '>'.$row['username'].'</option>';
-                            }
+                              $html .= '>'.$value['nama'].'</option>';
+                              }
+                          }
+                          
+                        }    
                         $html .='</select>';
                         $html .='<script src="dist/js/selectt2.js"></script>';
                         $html .='<script>

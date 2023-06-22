@@ -65,6 +65,24 @@ while($data = mysqli_fetch_array($query)){
         <div class="modal-body">
           <form method="post" action="proses_edit_intermediate.php">
             <div class="row mb-3">
+             <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Nama FGD:</label>
+                        <!-- get data dari fgd -->
+                        <select class="form-control " name="kode_fgd" id="kode_fgd'.$no.'" required>';
+                            include "proses/koneksi.php";
+                            $sql2 = "SELECT * FROM db_fgd";
+                            $query2 = mysqli_query($db, $sql2);
+                            foreach($query2 as $row2) {
+                        $html .= '<option value="'.$row2['kode_fgd'].'"';
+                              if ($row2['kode_fgd'] == $data['kode_fgd']) {
+                        $html .= 'selected';
+                              }
+                        $html .= '>'.$row2['nama_fgd'].'</option>';
+                            }
+              $html .= '</select>
+                    </div>
+                </div>
               <div class="col-md-3">
                   <div class="form-group">
                       <label>End Result :</label>
@@ -106,24 +124,6 @@ while($data = mysqli_fetch_array($query)){
                         $html .= 'selected';
                               }
                         $html .= '>'.$row['nama'].'</option>';
-                            }
-              $html .= '</select>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="form-group">
-                        <label>Nama FGD:</label>
-                        <!-- get data dari fgd -->
-                        <select class="form-control " name="kode_fgd" id="kode_fgd'.$no.'" required>';
-                            include "proses/koneksi.php";
-                            $sql2 = "SELECT * FROM db_fgd";
-                            $query2 = mysqli_query($db, $sql2);
-                            foreach($query2 as $row2) {
-                        $html .= '<option value="'.$row2['kode_fgd'].'"';
-                              if ($row2['kode_fgd'] == $data['kode_fgd']) {
-                        $html .= 'selected';
-                              }
-                        $html .= '>'.$row2['nama_fgd'].'</option>';
                             }
               $html .= '</select>
                     </div>
