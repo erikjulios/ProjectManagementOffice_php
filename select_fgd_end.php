@@ -66,10 +66,8 @@ $html .= '<div class="modal" id="editModal'.$no.'" tabindex="-1" role="dialog" a
         <div class="modal-body">
           <form method="post" action="proses_edit_endresult.php">
             <input type="hidden" id="kode_endresult'.$no.'" name="kode_endresult" value="'.$data['kode_endresult'].'">
-            <div class="border border-primary px-3 pb-3">
-              <div class="row mb-4 mt-4 text-bold h5 text-primary">End Result</div>  
-              <div class="row">
-                <div class="col-md-2">
+            <div class="row mb-3">
+                <div class="col-md-12">
                     <div class="form-group">
                         <label>Nama FGD:</label>
                         <!-- get data dari fgd -->
@@ -87,6 +85,10 @@ $html .= '<div class="modal" id="editModal'.$no.'" tabindex="-1" role="dialog" a
                       $html .= ' </select>
                     </div>
                 </div>
+            </div>
+            <div class="border border-primary px-3 pb-3">
+              <div class="row mb-4 mt-4 text-bold h5 text-primary">End Result</div>  
+              <div class="row">
                 <div class="col-md-5">
                     <div class="form-group">
                         <label>End Result:</label>

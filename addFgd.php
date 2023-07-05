@@ -121,7 +121,7 @@ if(!isset($_SESSION["loggedin"])) header("Location: login.php");
           <li class="nav-item">
             <a href="addFgd.php" class="nav-link active">
               <!-- <i class="nav-icon fas fa-th"></i> -->
-              <i class="nav-icon fas fa-plus"></i>
+              <i class="fab fa-forumbee" aria-hidden="true"></i>
               <p>
                 Add FGD
                 <!-- <span class="right badge badge-danger">New</span> -->
@@ -131,7 +131,7 @@ if(!isset($_SESSION["loggedin"])) header("Location: login.php");
           <li class="nav-item">
             <a href="addProject.php" class="nav-link">
               <!-- <i class="nav-icon fas fa-th"></i> -->
-              <i class="nav-icon fas fa-plus"></i>
+              <i class="fas fa-business-time"></i>
               <p>
                 Add Project
                 <!-- <span class="right badge badge-danger">New</span> -->

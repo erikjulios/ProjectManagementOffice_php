@@ -6,10 +6,17 @@ $kode_fgd = $_GET['kode_fgd'];
 
 // Query the database based on the filter value
 if ($kode_fgd == 'all') {
-  $sql = "SELECT * FROM db_target_activity";
+  // $sql = "SELECT * FROM db_target_activity";
 } else {
   // Fetch filtered data
-  $sql = "SELECT * FROM db_target_activity a LEFT JOIN db_target_intermediate i ON a.kode_intermediate = i.kode_intermediate WHERE a.kode_fgd = '$kode_fgd' AND a.user_create = '$username'";
+  $sql = "SELECT a.start AS activity_start, a.end AS activity_end,
+          a.duration AS activity_duration, a.uom AS activity_uom, a.estimasi_cost AS activity_estimasi_cost,
+          a.target_jan AS activity_target_jan,a.target_feb AS activity_target_feb, a.target_mar AS activity_target_mar,
+          a.target_apr AS activity_target_apr, a.target_mei AS activity_target_mei,
+          a.target_jun AS activity_target_jun, a.target_jul AS activity_target_jul,
+          a.target_aug AS activity_target_aug, a.target_sep AS activity_target_sep,
+          a.target_okt AS activity_target_okt, a.target_nov AS activity_target_nov,
+          a.target_des AS activity_target_des, a.*, i.*  FROM db_target_activity a LEFT JOIN db_target_intermediate i ON a.kode_intermediate = i.kode_intermediate WHERE a.kode_fgd = '$kode_fgd' AND a.user_create = '$username'";
 }
 $query = mysqli_query($db, $sql);
 
@@ -43,15 +50,33 @@ while($data = mysqli_fetch_array($query)){
   $sqll = "SELECT username FROM db_user WHERE userid=".$data['pic'];
   $queryy = mysqli_query($db, $sqll);
   $dataa = mysqli_fetch_array($queryy);
-  $html .= '<td>'.$dataa['username'].'</td>
-  <td>'. $data['supported_by'].'</td>
-  <td>'. $data['lokasi'].'</td>
-  <td>'. $data['uom'].'</td>
+  $html .= '<td>'.$dataa['username'].'</td>';
+      $getNama = "SELECT userid,username FROM db_user";
+      $execute_nama = mysqli_query($db, $getNama);
+      $daftar_user= array();
+      foreach ($execute_nama as $key) {
+        if($data['supported_by'] == $key['userid']){
+          $html .= '<td>'. $key['username'].'</td>';
+          $key['username'];
+        }
+      }
+  $html .= '
+  
+  <td>'. $data['lokasi'].'</td>';
+  $get_uom = "SELECT * FROM uom";
+  $exec = mysqli_query($db, $get_uom);
+  foreach($exec as $row) {
+    if ($row['id'] == $data['activity_uom']) {
+      $html .= '<td>'. $row['nama'].'</td>
+      ';
+    }
+  }
+  $html .= '
   <td>'. $data['target'].'</td>
-  <td>'. "Rp.".$data['estimasi_cost'].'</td>
+  <td>'. "Rp.".$data['activity_estimasi_cost'].'</td>
   <td>'. date('d-m-Y', strtotime($data['start'])).'</td>
   <td>'. date('d-m-Y', strtotime($data['end'])).'</td>
-  <td>'. $data['duration'].'</td>
+  <td>'. $data['activity_duration'].'</td>
   <td>
     <a data-toggle="modal" data-target="#editModal2'.$no.'">
       <span class="fa fa-edit text-primary"></span>
@@ -62,7 +87,7 @@ while($data = mysqli_fetch_array($query)){
       <span class="fa fa-trash text-danger"></span>
     </a>
   </td>
-  <div class="modal fade" id="editModal2'. $no.'" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+  <div class="modal" id="editModal2'. $no.'" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
@@ -73,6 +98,24 @@ while($data = mysqli_fetch_array($query)){
           <form method="post" action="proses_edit_activity.php">
             <input type="hidden" id="kode_activity'.$no.'" name="kode_activity" value="'. $data['kode_activity'].'">
             <div class="row mb-3">
+              <div class="col-md-12">
+                  <div class="form-group">
+                      <label>Nama FGD:</label>
+                      <!-- get data dari fgd -->
+                      <select class="form-control " name="kode_fgd" id="kode_fgd'.$no.'" required>';
+                            include "proses/koneksi.php";
+                            $sql1 = "SELECT * FROM db_fgd";
+                            $query1 = mysqli_query($db, $sql1);
+                            foreach($query1 as $row) {
+                              $html .= '<option value="'.$row['kode_fgd'].'"';
+                              if ($row['kode_fgd'] == $data['kode_fgd']) {
+                                $html .= 'selected';
+                              }
+                              $html .= '>'.$row['nama_fgd'].'</option>';
+                            }
+                      $html .= '</select>
+                  </div>
+              </div>
               <div class="col-md-3">
                   <div class="form-group">
                       <label>End Result :</label>
@@ -207,7 +250,8 @@ while($data = mysqli_fetch_array($query)){
                         }    
                         $html .='</select>';
                         $html .='<script src="dist/js/selectt2.js"></script>';
-                        $html .='<script>
+                        $html .='
+                        <script>
                         $(document).on("shown.bs.modal", function () {
                           $("#option_supported_edit'.$no.'").select2({
                               placeholder: "Supported by",
@@ -252,24 +296,7 @@ while($data = mysqli_fetch_array($query)){
                         <input type="text" class="form-control pull-right" id="target'.$no.'" name="target" value="'. $data['target'].'" required>
                     </div>
                 </div>
-                <div class="col-md-2">
-                  <div class="form-group">
-                      <label>Nama FGD:</label>
-                      <!-- get data dari fgd -->
-                      <select class="form-control " name="kode_fgd" id="kode_fgd'.$no.'" required>';
-                            include "proses/koneksi.php";
-                            $sql1 = "SELECT * FROM db_fgd";
-                            $query1 = mysqli_query($db, $sql1);
-                            foreach($query1 as $row) {
-                             $html .= '<option value="'.$row['kode_fgd'].'"';
-                              if ($row['kode_fgd'] == $data['kode_fgd']) {
-                               $html .= 'selected';
-                              }
-                             $html .= '>'.$row['nama_fgd'].'</option>';
-                            }
-                      $html .= '</select>
-                  </div>
-              </div>
+                
               </div>
             </div>
             <div class="border border-primary mb-2 px-3 pb-3">
@@ -284,19 +311,19 @@ while($data = mysqli_fetch_array($query)){
                 <div class="col-md-2">
                     <div class="form-group">
                         <label for="nama">Start:</label>
-                        <input type="date" class="form-control pull-right" id="start'.$no.'" name="start" value="'. $data['start'].'" onchange="duration_act('.$no.')" required>
+                        <input type="date" class="form-control pull-right" id="start'.$no.'" name="start" value="'.$data['activity_start'].'" onchange="duration_act('.$no.')" required>
                     </div>
                 </div>
                 <div class="col-md-2">
                     <div class="form-group">
                         <label for="nama">End:</label>
-                        <input type="date" class="form-control pull-right" id="end'.$no.'" name="end" value="'. $data['end'].'" onchange="duration_act('.$no.')" required>
+                        <input type="date" class="form-control pull-right" id="end'.$no.'" name="end" value="'.$data['activity_end'].'" onchange="duration_act('.$no.')" required>
                     </div>
                 </div>
                 <div class="col-md-1">
                     <div class="form-group">
                         <label for="nama">Duration:</label>
-                        <input type="text" class="form-control pull-right" id="duration'.$no.'" name="duration" value="'. $data['duration'].'" required readonly >
+                        <input type="text" class="form-control pull-right" id="duration'.$no.'" name="duration" value="'.$data['activity_duration'].'" required readonly >
                     </div>
                 </div>
               </div>
@@ -307,73 +334,73 @@ while($data = mysqli_fetch_array($query)){
               <div class="col-md-2">
                     <div class="form-group">
                         <label>Januari:</label>
-                        <input type="text" class="form-control pull-right" id="jan'.$no.'" name="jan" value="'. $data['target_jan'].'" required>
+                        <input type="text" class="form-control pull-right" id="jan'.$no.'" name="jan" value="'. $data['activity_target_jan'].'" required>
                     </div>
                 </div>
                 <div class="col-md-2">
                     <div class="form-group">
                         <label>Februari:</label>
-                        <input type="text" class="form-control pull-right" id="feb'.$no.'" name="feb" value="'. $data['target_feb'].'" required>
+                        <input type="text" class="form-control pull-right" id="feb'.$no.'" name="feb" value="'. $data['activity_target_feb'].'" required>
                     </div>
                 </div>
                 <div class="col-md-2">
                     <div class="form-group">
                         <label>Maret:</label>
-                        <input type="text" class="form-control pull-right" id="mar'.$no.'" name="mar" value="'. $data['target_mar'].'" required>
+                        <input type="text" class="form-control pull-right" id="mar'.$no.'" name="mar" value="'. $data['activity_target_mar'].'" required>
                     </div>
                 </div>
                 <div class="col-sm-2">
                     <div class="form-group">
                         <label>April:</label>
-                        <input type="text" class="form-control pull-right" id="apr'.$no.'" name="apr" value="'. $data['target_apr'].'" required>
+                        <input type="text" class="form-control pull-right" id="apr'.$no.'" name="apr" value="'. $data['activity_target_apr'].'" required>
                     </div>
                 </div>
                 <div class="col-sm-2">
                     <div class="form-group">
                         <label>Mei:</label>
-                        <input type="text" class="form-control pull-right" id="mei'.$no.'" name="mei" value="'. $data['target_mei'].'" required>
+                        <input type="text" class="form-control pull-right" id="mei'.$no.'" name="mei" value="'. $data['activity_target_mei'].'" required>
                     </div>
                 </div>
                 <div class="col-sm-2">
                     <div class="form-group">
                         <label>Juni:</label>
-                        <input type="text" class="form-control pull-right" id="jun'.$no.'" name="jun" value="'. $data['target_jun'].'" required>
+                        <input type="text" class="form-control pull-right" id="jun'.$no.'" name="jun" value="'. $data['activity_target_jun'].'" required>
                     </div>
                 </div>
                 <div class="col-sm-2">
                     <div class="form-group">
                         <label>Juli:</label>
-                        <input type="text" class="form-control pull-right" id="jul'.$no.'" name="jul" value="'. $data['target_jul'].'" required>
+                        <input type="text" class="form-control pull-right" id="jul'.$no.'" name="jul" value="'. $data['activity_target_jul'].'" required>
                     </div>
                 </div>
                 <div class="col-sm-2">
                     <div class="form-group">
                         <label>Agustus:</label>
-                        <input type="text" class="form-control pull-right" id="aug'.$no.'" name="aug" value="'. $data['target_aug'].'" required>
+                        <input type="text" class="form-control pull-right" id="aug'.$no.'" name="aug" value="'. $data['activity_target_aug'].'" required>
                     </div>
                 </div>
                 <div class="col-sm-2">
                     <div class="form-group">
                         <label>September:</label>
-                        <input type="text" class="form-control pull-right" id="sep'.$no.'" name="sep" value="'. $data['target_sep'].'" required>
+                        <input type="text" class="form-control pull-right" id="sep'.$no.'" name="sep" value="'. $data['activity_target_sep'].'" required>
                     </div>
                 </div>
                 <div class="col-sm-2">
                     <div class="form-group">
                         <label>Oktober:</label>
-                        <input type="text" class="form-control pull-right" id="okt'.$no.'" name="okt" value="'. $data['target_okt'].'" required>
+                        <input type="text" class="form-control pull-right" id="okt'.$no.'" name="okt" value="'. $data['activity_target_okt'].'" required>
                     </div>
                 </div>
                 <div class="col-sm-2">
                     <div class="form-group">
                         <label>November:</label>
-                        <input type="text" class="form-control pull-right" id="nov'.$no.'" name="nov" value="'. $data['target_nov'].'" required>
+                        <input type="text" class="form-control pull-right" id="nov'.$no.'" name="nov" value="'. $data['activity_target_nov'].'" required>
                     </div>
                 </div>
                 <div class="col-sm-2">
                     <div class="form-group">
                         <label>Desember:</label>
-                        <input type="text" class="form-control pull-right" id="des'.$no.'" name="des" value="'. $data['target_des'].'" required>
+                        <input type="text" class="form-control pull-right" id="des'.$no.'" name="des" value="'. $data['activity_target_des'].'" required>
                     </div>
                 </div>
               </div>

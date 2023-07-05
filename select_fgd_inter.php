@@ -65,7 +65,7 @@ while($data = mysqli_fetch_array($query)){
         <div class="modal-body">
           <form method="post" action="proses_edit_intermediate.php">
             <div class="row mb-3">
-             <div class="col-md-2">
+             <div class="col-md-12">
                     <div class="form-group">
                         <label>Nama FGD:</label>
                         <!-- get data dari fgd -->
